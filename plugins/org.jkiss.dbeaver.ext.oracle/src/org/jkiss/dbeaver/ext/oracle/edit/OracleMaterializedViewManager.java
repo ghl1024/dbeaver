@@ -105,7 +105,7 @@ public class OracleMaterializedViewManager extends SQLObjectEditor<OracleMateria
         final String lineSeparator = GeneralUtils.getDefaultLineSeparator();
         boolean hasComment = command.getProperty("comment") != null;
         if (!hasComment || command.getProperties().size() > 1) {
-            String mViewDefinition = view.getObjectDefinitionText(null, DBPScriptObject.EMPTY_OPTIONS).trim();
+            String mViewDefinition = view.getMViewText().trim();
             if (mViewDefinition.startsWith("CREATE MATERIALIZED VIEW")) {
                 if (mViewDefinition.endsWith(";")) mViewDefinition = mViewDefinition.substring(0, mViewDefinition.length() - 1);
                 decl.append(mViewDefinition);

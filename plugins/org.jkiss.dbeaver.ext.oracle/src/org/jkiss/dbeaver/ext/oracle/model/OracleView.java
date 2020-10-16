@@ -118,17 +118,17 @@ public class OracleView extends OracleTableBase implements OracleSourceObject, D
     @Property(hidden = true, editable = true, updatable = true, order = -1)
     public String getObjectDefinitionText(DBRProgressMonitor monitor, Map<String, Object> options) throws DBException
     {
-        if (viewText == null) {
-            OracleDDLFormat format = OracleDDLFormat.COMPACT;
-            if (CommonUtils.getOption(options, OPTION_INCLUDE_COMMENTS)) {
-                format = OracleDDLFormat.FULL;
-            }
+        //if (viewText == null) {
+            OracleDDLFormat format = OracleDDLFormat.FULL;
+            //if (CommonUtils.getOption(options, OPTION_INCLUDE_COMMENTS)) {
+            //    format = OracleDDLFormat.FULL;
+            //}
             try {
-                viewText = OracleUtils.getDDL(monitor, getTableTypeName(), this, format, options);
+                viewText = OracleUtils.getDDL(monitor, getTableTypeName(), this, OracleDDLFormat.getCurrentFormat(getDataSource()), options);
             } catch (DBException e) {
                 log.warn("Error getting view definition from system package", e);
             }
-        }
+        //}
         if (CommonUtils.isEmpty(viewText)) {
             loadAdditionalInfo(monitor);
             if (CommonUtils.isEmpty(viewSourceText)) {

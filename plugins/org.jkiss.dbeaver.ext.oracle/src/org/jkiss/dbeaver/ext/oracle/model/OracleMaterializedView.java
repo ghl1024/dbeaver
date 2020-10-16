@@ -170,9 +170,9 @@ public class OracleMaterializedView extends OracleTableBase implements OracleSou
     @Property(hidden = true, editable = true, updatable = true, order = -1)
     public String getObjectDefinitionText(DBRProgressMonitor monitor, Map<String, Object> options)
     {
-        if (query == null) {
+        //if (query == null) {
             try {
-                query = OracleUtils.getDDL(monitor, getTableTypeName(), this, OracleDDLFormat.COMPACT, options);
+                query = OracleUtils.getDDL(monitor, getTableTypeName(), this, OracleDDLFormat.getCurrentFormat(getDataSource()), options);
             } catch (DBException e) {
                 String message = e.getMessage();
                 if (message != null) {
@@ -181,13 +181,17 @@ public class OracleMaterializedView extends OracleTableBase implements OracleSou
                 query = "/*\nError generating materialized view DDL:\n" + message + "\n*/";
                 log.warn("Error getting view definition from system package", e);
             }
-        }
+        //}
         return query;
     }
 
     public void setObjectDefinitionText(String source)
     {
         this.query = source;
+    }
+
+    public String getMViewText() {
+        return query;
     }
 
     private void loadAdditionalInfo(DBRProgressMonitor monitor) throws DBCException

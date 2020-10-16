@@ -28,16 +28,31 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.jkiss.dbeaver.ext.oracle.model.OracleConstants;
 import org.jkiss.dbeaver.ext.oracle.model.OracleDDLFormat;
-import org.jkiss.dbeaver.ext.oracle.model.OracleTable;
+import org.jkiss.dbeaver.ext.oracle.model.OracleTableBase;
+import org.jkiss.dbeaver.ext.oracle.model.source.OracleSourceObject;
 import org.jkiss.dbeaver.ui.editors.sql.SQLSourceViewer;
 
 /**
  * OracleObjectDDLEditor
  */
-public class OracleObjectDDLEditor extends SQLSourceViewer<OracleTable> {
+public class OracleObjectDDLEditor extends SQLSourceViewer<OracleTableBase> {
 
     public OracleObjectDDLEditor()
     {
+    }
+
+    @Override
+    protected String getCompileCommandId()
+    {
+        if (getSourceObject() instanceof OracleSourceObject) {
+            return OracleConstants.CMD_COMPILE;
+        }
+        return null;
+    }
+
+    @Override
+    protected boolean isReadOnly() {
+        return !(getSourceObject() instanceof OracleSourceObject);
     }
 
     @Override
